@@ -1,9 +1,8 @@
 from functools import wraps
 
 from flask import (Blueprint, render_template, get_flashed_messages,
-                   current_app, has_app_context, request)
-# from jinja2.utils import markupsafe
-from markupsafe import Markup
+                   app_ctx, request)
+from jinja2.utils import markupsafe
 from flask_modals.partial import get_partial
 
 
@@ -11,7 +10,7 @@ def modal_messages():
     '''This will be available in the app templates for use in the modal
     body.
     '''
-    return Markup(render_template('modals/modalMessages.html'))
+    return markupsafe.Markup(render_template('modals/modalMessages.html'))
 
 
 def render_template_modal(*args, **kwargs):
@@ -22,8 +21,7 @@ def render_template_modal(*args, **kwargs):
     from `modal` which is the `id` of the modal.
     '''
 
-    if has_app_context():
-        ctx = current_app.app_context()
+    ctx = app_ctx
     modal = kwargs.pop('modal', 'modal-form')
 
     if can_stream():
@@ -96,8 +94,7 @@ class Modal:
         displayed and so we do not flash messages in it.
         '''
 
-        if has_app_context():
-            ctx = current_app.app_context()
+        ctx = app_ctx
         if not getattr(ctx, '_modal', None):
             return
 
@@ -113,6 +110,6 @@ class Modal:
         nprogress_html = render_template('modals/nprogress.html')
         main_html = render_template('modals/jstemplate.html')
 
-        html = Markup(nprogress_html + main_html)
+        html = markupsafe.Markup(nprogress_html + main_html)
 
         return html
