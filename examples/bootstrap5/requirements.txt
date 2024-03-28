@@ -1,4 +1,4 @@
 Flask
-Flask-Modals
+Flask-Modals @ git+https://github.com/jkaye99/flask-modals.git
 Flask-WTF
 email-validator
