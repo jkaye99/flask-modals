@@ -31,6 +31,7 @@ def render_template_modal(*args, **kwargs):
     modal = kwargs.pop('modal', 'modal-form')
 
     if can_stream():
+        print("can stream")
         # prevent flash messages from showing both outside and
         # inside the modal
         ctx._modal = True
